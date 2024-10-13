@@ -14,8 +14,8 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Producto_Componente.init({
-    createdAt: DataTypes.STRING,
-    updateAt: DataTypes.STRING
+    productoId: DataTypes.INTEGER,
+    componenteId: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Producto_Componente',
