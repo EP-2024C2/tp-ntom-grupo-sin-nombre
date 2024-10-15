@@ -30,7 +30,7 @@ productoController.getProductosId = getProductosId
 const createProducto = async (req, res) => {
     const {nombre, descripcion, precio, pathImg} = req.body
     try {
-        const fabricante = await Producto.create({
+        const producto = await Producto.create({
             nombre,
             descripcion,
             precio,
