@@ -1,4 +1,4 @@
-const { Producto } = require('../db/models')
+const {Producto, Producto_Fabricante } = require('../db/models')
 
 const productoController = {}
 
@@ -75,5 +75,46 @@ const deleteProducto = async (req, res) => {
     }
 }
 productoController.deleteProducto = deleteProducto
+
+const getFabricantesById = async(req, res) => {
+    const id = req.params.id
+    res.status(200).json(await Producto.findOne({
+        where:{id},
+        include: [
+            {
+                model: Fabricante,
+                as: 'fabricantes',
+                through:{
+                    attributes: []
+                }
+            }
+        ],
+    }))
+}
+controller.getFabricantesById = getFabricantesById
+
+const associateFabricanteById = async(req, res) => {
+    const listaFabricantes = req.body
+    const id = req.params.id
+    const mensajes = []
+    await Promise.all(
+        listaFabricantes.map(async (fabricante) => {
+            const existeRegistro = await Producto_Fabricante.findOne({where:{id_producto:id, id_fabricante: fabricante.id}})
+            console.log(existeRegistro) 
+            if(existeRegistro)
+                mensajes.push(`El fabricante con el ID ${fabricante.id} ya esta asociado al producto con id ${id}`)
+            else{
+                await Producto_Fabricante.create({id_producto:id, id_fabricante: fabricante.id})
+                mensajes.push(`El fabricante con el ID ${fabricante.id} se asocio al producto con id ${id}`)
+            }
+        }))
+
+    const productoActualizado = await Producto.findOne({where:{id},include: [
+            {model: Fabricante,as: 'fabricantes',through:{attributes: []}}
+        ],})
+    await res.status(200).json({mensajes, productoActualizado})
+    }
+
+controller.associateFabricanteById = associateFabricanteById
 
 module.exports = productoController
