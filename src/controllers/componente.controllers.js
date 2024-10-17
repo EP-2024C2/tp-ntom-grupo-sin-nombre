@@ -72,4 +72,22 @@ const deleteComponente = async (req,res) => {
 
 controller.deleteComponente = deleteComponente
 
+const getProductosByComponenteId = async(req, res) => {
+    const idComponente = req.params.id
+    res.status(200).json(await Componente.findOne({
+        where:{idComponente},
+        include: [
+            {
+                model: Producto,
+                as: 'Productos',
+                through:{
+                    attributes: []
+                }
+            }
+        ]
+    }))
+}
+
+controller.getProductosByComponenteId = getProductosByComponenteId
+
 module.exports = componenteController

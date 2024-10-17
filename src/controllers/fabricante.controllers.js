@@ -77,4 +77,22 @@ const deleteFabricante = async (req, res) => {
 }
 fabricanteController.deleteFabricante = deleteFabricante
 
+const getProductosByFabricanteId = async(req, res) => {
+    const idFabricante = req.params.id
+    res.status(200).json(await Fabricante.findOne({
+        where:{idFabricante},
+        include: [
+            {
+                model: Producto,
+                as: 'Productos',
+                through:{
+                    attributes: []
+                }
+            }
+        ]
+    }))
+}
+fabricanteController.getProductosByFabricanteId = getProductosByFabricanteId
+
+
 module.exports = fabricanteController
