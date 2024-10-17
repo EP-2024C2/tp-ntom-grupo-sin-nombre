@@ -1,4 +1,4 @@
-const {Producto, Producto_Fabricante } = require('../db/models')
+const {Producto, Producto_Fabricante, Producto_Componente } = require('../db/models')
 
 const productoController = {}
 
@@ -21,7 +21,7 @@ const getProductosId = async (req, res) => {
         res.status(200).json(producto)
     }
     else {
-        res.status(404).json({ mensaje: `El id ${id} no se encuentra.` })
+        res.status(404).json({ mensaje: `El producto de id ${id} no se encuentra.` })
     }
 }
 productoController.getProductosId = getProductosId
@@ -116,5 +116,63 @@ const associateFabricanteById = async(req, res) => {
     }
 
 controller.associateFabricanteById = associateFabricanteById
+
+const associateComponenteById = async (req, res) => {  
+    const listaComponentes = req.body;  
+    const id = req.params.id;  
+    const mensajes = [];  
+
+    try {  
+        if (!Array.isArray(listaComponentes) || listaComponentes.length === 0) {  
+            return res.status(400).json({ message: 'No existe lista de componentes' });  
+        }  
+
+        await Promise.all(  
+            listaComponentes.map(async (componente) => {  
+                const existeRegistro = await Producto_Componente.findOne({  
+                    where: {id_producto: id, id_componente: componente.id}  
+                });  
+
+                if (existeRegistro) {  
+                    mensajes.push(`El componente con el ID ${componente.id} ya está asociado al curso con id ${id}`);  
+                } else {  
+                    await Producto_Componente.create({ id_producto: id, id_componente: componente.id });  
+                    mensajes.push(`El componente con el ID ${componente.id} se asoció al curso con id ${id}`);  
+                }  
+            })  
+        );  
+
+        const prodActualizado = await Producto.findOne({  
+            where: {id},  
+            include: [  
+                {model: Componente, as: 'componentes', through: {attributes: []}}  
+            ],  
+        });  
+
+        return res.status(200).json({ mensajes, prodActualizado });  
+    } catch (error) {  
+        console.error(error);  
+        return res.status(500).json({ message: 'Error al obtener componentes' });  
+    }  
+};  
+
+controller.associateComponenteById = associateComponenteById;  
+
+const getComponentesById = async(req, res) => {
+    const id = req.params.id
+    try {  
+        const componente = await Producto.findOne({  
+            where: {id},  
+            include: [{model: Componente,as: 'componentes', through: {attributes: []}}],  
+        }); 
+        res.status(200).json(componente);  
+    } catch (error) {  
+        console.error(error);  
+        res.status(404).json({message: 'No se encontró el componente'});  
+    }
+}
+controller.getComponentesById = getComponentesById
+
+
 
 module.exports = productoController
