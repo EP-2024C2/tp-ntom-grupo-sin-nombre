@@ -1,7 +1,6 @@
-const { Fabricante } = require('../db/models')
+const { Fabricante, Producto_Fabricante} = require('../db/models')
 
 const fabricanteController = {}
-
 
 const getFabricantes = async (req, res) => {
     try {

@@ -1,13 +1,17 @@
-const { Componente } = require('../db/models')
+const { Componente, Producto_Componente } = require('../db/models')
 
 const componenteController = {}
 
 const getAllComponentes = async (req, res) => {
-    const componentes = await Componente.findAll()
-    res.status(200).json(componentes)
+    try {
+        const componentes = await Componente.findAll({})
+        res.status(200).json(componentes)
+    }
+    catch (error) {
+        res.status(404).json({ error: 'Error al obtener componentes' })
+    }
 }
-
-controller.getAllComponentes = getAllComponentes
+componenteController.getAllComponentes = getAllComponentes
 
 const getComponenteById = async (req, res)=> {
     const id = req.params.id
@@ -19,7 +23,7 @@ const getComponenteById = async (req, res)=> {
     }
 }
 
-controller.getComponenteById = getComponenteById
+componenteController.getComponenteById = getComponenteById
 
 const postComponente = async (req,res) => {
     const { nombre, descripcion } = req.body
@@ -35,7 +39,7 @@ const postComponente = async (req,res) => {
     }  
 }
 
-controller.postComponente = postComponente
+componenteController.postComponente = postComponente
 
 const updateComponente = async (req,res) => {
     const { nombre, descripcion } = req.body
@@ -52,7 +56,7 @@ const updateComponente = async (req,res) => {
     }
 }
 
-controller.updateComponente = updateComponente
+componenteController.updateComponente = updateComponente
 
 const deleteComponente = async (req,res) => {
     try {
@@ -70,7 +74,7 @@ const deleteComponente = async (req,res) => {
     }
 }
 
-controller.deleteComponente = deleteComponente
+componenteController.deleteComponente = deleteComponente
 
 const getProductosByComponenteId = async(req, res) => {
     const idComponente = req.params.id
@@ -88,6 +92,6 @@ const getProductosByComponenteId = async(req, res) => {
     }))
 }
 
-controller.getProductosByComponenteId = getProductosByComponenteId
+componenteController.getProductosByComponenteId = getProductosByComponenteId
 
 module.exports = componenteController

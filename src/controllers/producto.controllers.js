@@ -91,7 +91,7 @@ const getFabricantesById = async(req, res) => {
         ],
     }))
 }
-controller.getFabricantesById = getFabricantesById
+productoController.getFabricantesById = getFabricantesById
 
 const associateFabricanteById = async(req, res) => {
     const listaFabricantes = req.body
@@ -115,7 +115,7 @@ const associateFabricanteById = async(req, res) => {
     await res.status(200).json({mensajes, productoActualizado})
     }
 
-controller.associateFabricanteById = associateFabricanteById
+productoController.associateFabricanteById = associateFabricanteById
 
 const associateComponenteById = async (req, res) => {  
     const listaComponentes = req.body;  
@@ -156,7 +156,7 @@ const associateComponenteById = async (req, res) => {
     }  
 };  
 
-controller.associateComponenteById = associateComponenteById;  
+productoController.associateComponenteById = associateComponenteById;  
 
 const getComponentesById = async(req, res) => {
     const id = req.params.id
@@ -171,7 +171,7 @@ const getComponentesById = async(req, res) => {
         res.status(404).json({message: 'No se encontró el componente'});  
     }
 }
-controller.getComponentesById = getComponentesById
+productoController.getComponentesById = getComponentesById
 
 
 
