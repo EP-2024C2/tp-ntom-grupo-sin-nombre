@@ -1,13 +1,19 @@
 const express = require("express")
 const routes = require('./routes/index')
 const sequelize = require('../config/database')
-
+const componenteRoute = require("./routes/componente.routes")
+const fabricanteRoute = require("./routes/fabricante.routes")
+const productoRoute = require("./routes/producto.routes")
 
 const app = express()
 
 app.use(express.json())
 
-app.use(routes)
+
+app.use(productoRoute)
+app.use(componenteRoute)
+app.use(fabricanteRoute)
+
 
 async function startDatabase(){
   try {

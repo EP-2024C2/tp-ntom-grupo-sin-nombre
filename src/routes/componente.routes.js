@@ -1,12 +1,15 @@
 const {Router} = require('express')
 const componenteController = require('../controllers/componente.controllers')
+const {Componente} = require('../db/models')
+const componenteMiddleware =  require('../middleware/middleware')
 
-const routes = Router()
+const componenteRoute = Router()
 
-routes.get('/', componenteController.getAllComponentes)
-routes.get('/', componenteController.getComponenteById)
-routes.post('/', componenteController.postComponente)
-routes.put('/', componenteController.updateComponente)
-routes.delete('/', componenteController.deleteComponente)
 
-module.exports = routes
+componenteRoute.get('/',componenteMiddleware.existsById(Componente), componenteController.getAllComponentes)
+componenteRoute.get('/', componenteMiddleware.existsById(Componente), componenteController.getComponenteById)
+componenteRoute.post('/', componenteMiddleware.existsById(Componente), componenteController.postComponente)
+componenteRoute.put('/', componenteMiddleware.existsById(Componente), componenteController.updateComponente)
+componenteRoute.delete('/',componenteMiddleware.existsById(Componente),  componenteController.deleteComponente)
+
+module.exports = componenteRoute
