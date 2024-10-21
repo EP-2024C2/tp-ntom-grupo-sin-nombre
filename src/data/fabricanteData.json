@@ -1,0 +1,18 @@
+[
+{ "nombre": "Juan",
+"direccion": "Jose María Paz 2159",
+"numeroContacto": "11283942",
+"pathImgPerfil": "img/789"},
+{
+"nombre": "María",
+"direccion": "Ratti 2800",
+"numeroContacto": "11283552",
+"pathImgPerfil": "img/783"
+
+},{
+"nombre": "Carla",
+"direccion": "Las Casas 210",
+"numeroContacto": "1128334",
+"pathImgPerfil": "img/782"
+}
+]

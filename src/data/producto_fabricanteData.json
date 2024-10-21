@@ -1,0 +1,14 @@
+[
+    {
+        "productoId": 1,
+        "fabricanteId": 1
+    },
+    {
+        "productoId": 5,
+        "fabricanteId": 5
+    },
+    {
+        "productoId": 2,
+        "fabricanteId": 3
+    }
+]

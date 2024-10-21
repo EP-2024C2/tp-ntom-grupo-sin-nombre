@@ -1,0 +1,12 @@
+[
+{ "nombre": "Placa Madre",
+"descripcion": "Mother Qc6000"},
+{
+"nombre": "Memoria RAM",
+"descripcion": "8GB DDR4"
+
+},{
+"nombre": "Procesador",
+"descripcion": "AMD Ryzen 7 5700"
+}
+]

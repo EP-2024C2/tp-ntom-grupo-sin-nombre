@@ -1,0 +1,17 @@
+[
+{ "nombre": "Monitor",
+"descripcion": "Monitor EXO 12 pulgadas",
+"precio": "70000",
+"pathImg": "Img/200"},
+{
+"nombre": "Mouse",
+"descripcion": "Mouse NOGA inalámbrico",
+"precio": "2000",
+"pathImg": "Img/250"
+},{
+"nombre": "Teclado",
+"descripcion": "Teclado Mecánico Ryzen",
+"precio": "50000",
+"pathImg": "Img/30"
+}
+]
