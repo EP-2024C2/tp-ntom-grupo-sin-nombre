@@ -5,11 +5,11 @@ const fabricanteMiddleware = require('../middleware/middleware');
 
 const fabricanteRoute = Router();
 
-fabricanteRoute.get('/', fabricanteController.getFabricantes);
-fabricanteRoute.get('/:id', fabricanteMiddleware.existsById(Fabricante), fabricanteController.getFabricanteId);
-fabricanteRoute.post('/', fabricanteMiddleware.validateSchema, fabricanteController.createFabricante); // Aquí
-fabricanteRoute.put('/:id', fabricanteMiddleware.existsById(Fabricante), fabricanteMiddleware.validateSchema, fabricanteController.updateFabricante); // Aquí
-fabricanteRoute.delete('/:id', fabricanteMiddleware.existsById(Fabricante), fabricanteMiddleware.existsIdInOtherModel(Fabricante, Producto_Fabricante, 'fabricanteId'), fabricanteController.deleteFabricante);
-fabricanteRoute.get('/:id/productos', fabricanteMiddleware.existsById(Fabricante), fabricanteController.getProductosByFabricanteId);
+fabricanteRoute.get('/fabricantes', fabricanteController.getFabricantes);
+fabricanteRoute.get('/fabricantes/:id', fabricanteMiddleware.existsById(Fabricante), fabricanteController.getFabricanteId);
+fabricanteRoute.post('/fabricantes', fabricanteMiddleware.validateSchema, fabricanteController.createFabricante); // Aquí
+fabricanteRoute.put('/fabricantes/:id', fabricanteMiddleware.existsById(Fabricante), fabricanteMiddleware.validateSchema, fabricanteController.updateFabricante); // Aquí
+fabricanteRoute.delete('/fabricantes/:id', fabricanteMiddleware.existsById(Fabricante), fabricanteMiddleware.existsIdInOtherModel(Fabricante, Producto_Fabricante, 'fabricanteId'), fabricanteController.deleteFabricante);
+fabricanteRoute.get("/fabricantes/:id/productos", fabricanteMiddleware.existsById(Fabricante) ,fabricanteController.getProductosByFabricanteId)
 
 module.exports = fabricanteRoute;
