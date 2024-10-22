@@ -16,12 +16,6 @@ app.use('/componentes', componenteRoute);
 app.use('/fabricantes', fabricanteRoute);
 app.use('/productos', productoRoute);
 
-// Middleware de manejo de errores
-app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).send('Something broke!');
-});
-
 const PORT = 3001
 
 app.listen(PORT, async ()=>{
