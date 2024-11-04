@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const componenteController = require('../controllers/componente.controllers');
 const { Componente, Producto, Producto_Componente } = require('../db/models');
-const componenteMiddleware = require('../middleware/middleware'); // Asegúrate de que esta ruta sea correcta
+const componenteMiddleware = require('../middleware/middleware'); 
 const componenteSchema = require("../schemas/componenteSchema");
 
 const componenteRoute = Router();
