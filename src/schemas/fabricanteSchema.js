@@ -14,7 +14,7 @@ const fabricanteSchema = Joi.object().keys({
 
     }),
 
-    numeroContacto: Joi.string().required().messages({
+    numeroContacto: Joi.number().required().messages({
         "any.required": "El campo numeroContacto es obligatorio",
         "string.empty": "El campo numeroContacto no puede estar vacio"  
 

@@ -14,7 +14,7 @@ const productoSchema = Joi.object().keys({
 
     }),
 
-    precio: Joi.string().required().messages({
+    precio: Joi.number().required().messages({
         "any.required": "El campo precio es obligatorio",
         "string.empty": "El campo precio no puede estar vacio"  
 

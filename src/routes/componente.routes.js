@@ -9,8 +9,8 @@ const componenteRoute = Router();
 // Definición de rutas
 componenteRoute.get('/componentes',componenteController.getAllComponentes)
 componenteRoute.get('/componentes/:id', componenteMiddleware.existsById(Componente), componenteController.getComponenteById)
-componenteRoute.post('/componentes', /*componenteMiddleware.existsById(Componente),*/ componenteController.postComponente)
-componenteRoute.put('/componentes/:id', componenteMiddleware.existsById(Componente), componenteMiddleware.validateSchema(componenteSchema),componenteController.updateComponente)
+componenteRoute.post('/componentes', componenteMiddleware.validateSchema(componenteSchema), componenteController.postComponente)
+componenteRoute.put('/componentes/:id', componenteMiddleware.existsById(Componente), componenteMiddleware.validateSchema(componenteSchema), componenteController.updateComponente)
 componenteRoute.delete('/componentes/:id',componenteMiddleware.existsById(Componente), componenteMiddleware.existsIdInOtherModel(Componente, Producto_Componente, 'componenteId'), componenteController.deleteComponente)
 componenteRoute.get("/componentes/:id/productos", componenteMiddleware.existsById(Componente) ,componenteController.getProductosByComponenteId)
 
