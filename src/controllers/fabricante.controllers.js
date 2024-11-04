@@ -2,6 +2,7 @@ const { Fabricante, Producto_Fabricante} = require('../db/models')
 
 const fabricanteController = {}
 
+// devuelve todos los fabricantes
 const getFabricantes = async (req, res) => {
     try {
         const fabricantes = await Fabricante.findAll({})
@@ -13,7 +14,7 @@ const getFabricantes = async (req, res) => {
 }
 fabricanteController.getFabricantes = getFabricantes
 
-
+// devuelve un fabricante por id
 const getFabricanteId = async (req, res) => {
     const id = req.params.id
     const fabricante = await Fabricante.findByPk(id)
@@ -26,7 +27,7 @@ const getFabricanteId = async (req, res) => {
 }
 fabricanteController.getFabricanteId = getFabricanteId
 
-
+//crea un fabricante
 const createFabricante = async (req, res) => {
     const { nombre, direccion, numeroContacto, pathImgPerfil } = req.body
     try {
@@ -44,38 +45,44 @@ const createFabricante = async (req, res) => {
 }
 fabricanteController.createFabricante = createFabricante
 
-
+// actualiza datos de un fabricante
 const updateFabricante = async (req, res) => {
-    const { nombre, direccion, numeroContacto, pathImgPerfil } = req.body
+    const fabricanteActualizado = req.body;
     try {
-        const id = req.params.id
-        const fabricante = await Fabricante.findByPk(id)
-        fabricante.nombre = nombre;
-        fabricante.direccion = direccion;
-        fabricante.numeroContacto = numeroContacto;
-        fabricante.pathImgPerfil = pathImgPerfil
-        await fabricante.save()
-        res.status(200).json(fabricante)
-    }
-    catch (error) {
-        res.status(404).json({message: "Error al modificar los datos del fabricante"})
+        await Fabricante.update({
+            nombre: fabricanteActualizado.nombre,
+            direccion: fabricanteActualizado.direccion,
+            numeroContacto: fabricanteActualizado.numeroContacto,
+            pathImgPerfil: fabricanteActualizado.pathImgPerfil,
+        }, { where: { id: req.params.id } })
+        const fabricanteModificado = await Fabricante.findByPk(req.params.id);
+        res.status(200).json(fabricanteModificado)
+
+    } catch (error) {
+        res.status(500).json({ error: `error al intentar crear: "${error}"` })
     }
 }
 fabricanteController.updateFabricante = updateFabricante
 
-
+// elimina un fabricante
 const deleteFabricante = async (req, res) => {
-    try {
-        const idFabric = req.params.id
-        const r = await Fabricante.destroy( {where: {id:idFabric}})
-        res.status(200).json({mensaje:  `filas afectados ${r}`})
+    const fabricante = req.modelo || await Fabricante.findByPk(req.params.id);
+    const cantProductosAsociados = await fabricante.countProductos()
+    if(cantProductosAsociados > 0) {
+        res.status(400).json({ message: `no se puede eliminar un fabricante si tiene productos asociados` });
+        return
     }
-    catch (error) {
-        res.status(404).json({message: "Error al eliminar fabricante"})
+
+    try {
+        await Fabricante.destroy({ where: { id: req.params.id } });
+        res.status(200).json({ message: 'OK' });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
     }
 }
 fabricanteController.deleteFabricante = deleteFabricante
 
+//devuelve los productos de un fabricante
 const getProductosByFabricanteId = async(req, res) => {
     const idFabricante = req.params.id
     res.status(200).json(await Fabricante.findOne({

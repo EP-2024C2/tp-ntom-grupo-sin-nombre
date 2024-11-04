@@ -16,7 +16,7 @@ const fabricanteSchema = Joi.object().keys({
 
     numeroContacto: Joi.number().required().messages({
         "any.required": "El campo numeroContacto es obligatorio",
-        "string.empty": "El campo numeroContacto no puede estar vacio"  
+        "number.integer": "El campo numeroContacto debe ser un número entero",
 
     }),
     pathImgPerfil: Joi.string().required().messages({

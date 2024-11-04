@@ -65,13 +65,22 @@ productoController.updateProducto = updateProducto
 
 
 const deleteProducto = async (req, res) => {
-    try {
-        const idProducto = req.params.id
-        const r = await Producto.destroy( {where: {id:idProducto}})
-        res.status(200).json({mensaje:  `filas afectadas ${r}`})
+    const modelo = req.modelo || await Producto.findByPk(req.params.id);
+    const cantComponentesAsociados = await modelo.countComponentes()
+    if(cantComponentesAsociados > 0) {
+        res.status(400).json({ message: `no se puede eliminar un producto si tiene componentes asociados` });
+        return
     }
-    catch (error) {
-        res.status(404).json({message: "Error al eliminar producto"})
+    const cantFabricantesAsociados = await modelo.countFabricantes()
+    if(cantFabricantesAsociados > 0) {
+        res.status(400).json({ message: `no se puede eliminar un producto si tiene fabricantes asociados` });
+        return
+    }
+    try {
+        await Producto.destroy({ where: { id: req.params.id } });
+        res.status(200).json({ message: 'OK' });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
     }
 }
 productoController.deleteProducto = deleteProducto

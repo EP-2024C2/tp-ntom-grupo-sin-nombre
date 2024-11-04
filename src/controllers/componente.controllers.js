@@ -59,18 +59,17 @@ const updateComponente = async (req,res) => {
 componenteController.updateComponente = updateComponente
 
 const deleteComponente = async (req,res) => {
-    try {
-        const id = req.params.id;
-        const componente = await Componente.destroy({where: {id}})
-
-        if (componente === 0) {
-            return res.status(404).json({ message: `El componente con id ${id} no existe.` })
-        }
-
-        res.status(200).json({ mensaje: `El componente con id ${id} fue eliminado con éxito.` })
+    const componente = req.modelo || await Componente.findByPk(req.params.id);
+    const cantProductosAsociados = await componente.countProductos()
+    if(cantProductosAsociados > 0) {
+        res.status(400).json({ message: `no se puede eliminar un componente si tiene productos asociados` });
+        return
     }
-    catch (error) {
-        res.status(500).json({message: "Error en al eliminar el componente"})
+    try {
+        await Componente.destroy({ where: { id: req.params.id } });
+        res.status(200).json({ message: 'OK' });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
     }
 }
 

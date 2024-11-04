@@ -16,7 +16,7 @@ const productoSchema = Joi.object().keys({
 
     precio: Joi.number().required().messages({
         "any.required": "El campo precio es obligatorio",
-        "string.empty": "El campo precio no puede estar vacio"  
+        "number.base": "El campo precio debe ser un número",
 
     }),
     pathImg: Joi.string().required().messages({
