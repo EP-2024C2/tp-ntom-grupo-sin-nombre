@@ -102,29 +102,32 @@ const getFabricantesById = async(req, res) => {
 }
 productoController.getFabricantesById = getFabricantesById
 
-const associateFabricanteById = async(req, res) => {
-    const listaFabricantes = req.body
-    const id = req.params.id
-    const mensajes = []
-    await Promise.all(
-        listaFabricantes.map(async (fabricante) => {
-            const existeRegistro = await Producto_Fabricante.findOne({where:{id_producto:id, id_fabricante: fabricante.id}})
-            console.log(existeRegistro) 
-            if(existeRegistro)
-                mensajes.push(`El fabricante con el ID ${fabricante.id} ya esta asociado al producto con id ${id}`)
-            else{
-                await Producto_Fabricante.create({id_producto:id, id_fabricante: fabricante.id})
-                mensajes.push(`El fabricante con el ID ${fabricante.id} se asocio al producto con id ${id}`)
-            }
-        }))
+const associateFabricanteById = async (req, res) => {
+    const producto = req.modelo || await Producto.findByPk(req.params.id);
+    const Lista_fabricantes = req.body;
 
-    const productoActualizado = await Producto.findOne({where:{id},include: [
-            {model: Fabricante,as: 'fabricantes',through:{attributes: []}}
-        ],})
-    await res.status(200).json({mensajes, productoActualizado})
+    if (!Array.isArray(Lista_fabricantes)) {
+        return res.status(500).json({ error: `No se encontró lista de fabricantes` })
     }
 
-productoController.associateFabricanteById = associateFabricanteById
+    for (const i in fabricantes) {
+        const fabricante = await Producto_Fabricante.findByPk(Lista_fabricantes[i].id)
+        if (!fabricante) {
+            return res.status(404).json({ error: `El fabricante con el id '${Lista_fabricantes[i].id}' no se encuentra` });
+        }
+        Lista_fabricantes[i] = fabricante
+    }
+    
+    try {
+        producto.addFabricantes(Lista_fabricantes)
+    } catch (error) {
+        const mensaje = `Error al asignar fabricantes a un producto: '${err}'`
+        console.error(mensaje)
+        return res.status(500).json({ error: mensaje })
+    }
+    res.status(200).json({ message: 'Fabricante asociado con éxito' });
+}
+controller.associateFabricanteById = associateFabricanteById
 
 const associateComponenteById = async (req, res) => {  
     const listaComponentes = req.body;  
