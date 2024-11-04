@@ -16,7 +16,7 @@ productoController.getProductos = getProductos
 
 const getProductosId = async (req, res) => {
     const id = req.params.id
-    const producto = await Producto.find(p => p.id == id)
+    const producto = await Producto.findByPk(id)
     if (producto){
         res.status(200).json(producto)
     }
@@ -36,7 +36,7 @@ const createProducto = async (req, res) => {
             precio,
             pathImg
         })
-        res.status(201).json(serie)
+        res.status(201).json(producto)
     }
     catch (error) {
         res.status(400).json({message: "Error en la creación del producto"})

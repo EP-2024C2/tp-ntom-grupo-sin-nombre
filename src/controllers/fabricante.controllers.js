@@ -16,7 +16,7 @@ fabricanteController.getFabricantes = getFabricantes
 
 const getFabricanteId = async (req, res) => {
     const id = req.params.id
-    const fabricante = await Fabricante.find(fab => fab.id == id)
+    const fabricante = await Fabricante.findByPk(id)
     if (fabricante){
         res.status(200).json(fabricante)
     }
@@ -36,7 +36,7 @@ const createFabricante = async (req, res) => {
             numeroContacto,
             pathImgPerfil
         })
-        res.status(201).json(serie)
+        res.status(201).json(fabricante)
     }
     catch (error) {
         res.status(400).json({message: "Error en la creación del fabricante"})

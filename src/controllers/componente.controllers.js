@@ -28,7 +28,7 @@ componenteController.getComponenteById = getComponenteById
 const postComponente = async (req,res) => {
     const { nombre, descripcion } = req.body
     try {
-      const componente = await Actores.create({   
+      const componente = await Componente.create({   
         nombre,   
         descripcion,
     })
