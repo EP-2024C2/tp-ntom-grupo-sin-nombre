@@ -1,15 +1,15 @@
 const existsById = (Model) => {
     return async (req, res, next) => {
-        const id = req.params.id;
-        const instancia = await Model.findByPk(id);
-        const modelName = Model.modelName || (Model.options.name && Model.options.name.singular);
+        const id = req.params.id
+        const instancia = await Model.findByPk(id)
+        const modelName = Model.modelName || (Model.options.name && Model.options.name.singular)
         
         if (!instancia) {
-            return res.status(404).json(`El ${modelName} con id ${id} no existe`);
+            return res.status(404).json(`El ${modelName} con id ${id} no existe`)
         }
-        next();
-    };
-};
+        next()
+    }
+}
 
 
 const validateSchema = (schema) => {

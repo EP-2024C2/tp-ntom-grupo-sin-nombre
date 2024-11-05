@@ -67,7 +67,7 @@ const deleteComponente = async (req,res) => {
     }
     try {
         await Componente.destroy({ where: { id: req.params.id } });
-        res.status(200).json({ message: 'OK' });
+        res.status(200).json({ message: 'Componente eliminado' });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }

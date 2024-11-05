@@ -78,7 +78,7 @@ const deleteProducto = async (req, res) => {
     }
     try {
         await Producto.destroy({ where: { id: req.params.id } });
-        res.status(200).json({ message: 'OK' });
+        res.status(200).json({ message: 'Producto eliminado' });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -106,10 +106,10 @@ productoController.getFabricantesById = getFabricantesById
 
 const associateFabricanteById = async (req, res) => {
     const producto = req.modelo || await Producto.findByPk(req.params.id);
-    const Lista_fabricantes = req.body;
+    const Lista_fabricantes = req.body
 
     if (!Array.isArray(Lista_fabricantes)) {
-        return res.status(500).json({ error: `Error de input: se esperaba un fabricante` })
+        return res.status(500).json({ error: `No se encontró lista de fabricantes` })
     }
 
     for (const i in Lista_fabricantes) {
@@ -138,7 +138,7 @@ const associateComponenteById = async (req, res) => {
 
     const lista_componentes = req.body;
     if (!Array.isArray(lista_componentes)) {
-        return res.status(500).json({ error: `Error de input: se esperaba un componente` })
+        return res.status(500).json({ error: `No se encontró lista de componentes` })
     }
     for (const i in lista_componentes) {
         const componente = await Componente.findByPk(lista_componentes[i].id)
