@@ -127,7 +127,7 @@ const associateFabricanteById = async (req, res) => {
     }
     res.status(200).json({ message: 'Fabricante asociado con éxito' });
 }
-controller.associateFabricanteById = associateFabricanteById
+productoController.associateFabricanteById = associateFabricanteById
 
 const associateComponenteById = async (req, res) => {  
     const listaComponentes = req.body;  
