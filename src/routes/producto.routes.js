@@ -12,6 +12,7 @@ productoRoute.get('/productos/:id', productoMiddleware.existsById(Producto), pro
 productoRoute.post('/productos', productoMiddleware.validateSchema(productoSchema) , productoController.createProducto);
 productoRoute.put('/productos/:id', productoMiddleware.existsById(Producto), productoMiddleware.validateSchema(productoSchema), productoController.updateProducto);
 productoRoute.delete('/productos/:id', productoMiddleware.existsById(Producto), productoController.deleteProducto);
+
 productoRoute.get('/productos/:id/fabricantes',productoMiddleware.existsById(Producto), productoController.getFabricantesById) 
 productoRoute.post('/productos/:id/fabricantes',productoMiddleware.existsById(Producto), productoController.associateFabricanteById)
 productoRoute.post('/productos/:id/componentes',productoMiddleware.existsById(Producto), productoController.associateComponenteById)

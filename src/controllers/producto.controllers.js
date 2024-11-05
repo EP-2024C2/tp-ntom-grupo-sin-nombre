@@ -1,4 +1,4 @@
-const {Producto, Producto_Fabricante, Producto_Componente } = require('../db/models')
+const {Producto, Componente, Fabricante } = require('../db/models')
 
 const productoController = {}
 
@@ -102,16 +102,18 @@ const getFabricantesById = async(req, res) => {
 }
 productoController.getFabricantesById = getFabricantesById
 
+//Asociar un fabricante a un producto
+
 const associateFabricanteById = async (req, res) => {
     const producto = req.modelo || await Producto.findByPk(req.params.id);
     const Lista_fabricantes = req.body;
 
     if (!Array.isArray(Lista_fabricantes)) {
-        return res.status(500).json({ error: `No se encontró lista de fabricantes` })
+        return res.status(500).json({ error: `Error de input: se esperaba un fabricante` })
     }
 
-    for (const i in fabricantes) {
-        const fabricante = await Producto_Fabricante.findByPk(Lista_fabricantes[i].id)
+    for (const i in Lista_fabricantes) {
+        const fabricante = await Fabricante.findByPk(Lista_fabricantes[i].id)
         if (!fabricante) {
             return res.status(404).json({ error: `El fabricante con el id '${Lista_fabricantes[i].id}' no se encuentra` });
         }
@@ -129,43 +131,32 @@ const associateFabricanteById = async (req, res) => {
 }
 productoController.associateFabricanteById = associateFabricanteById
 
+//Asociar un componente a un producto
+
 const associateComponenteById = async (req, res) => {  
-    const listaComponentes = req.body;  
-    const id = req.params.id;  
-    const mensajes = [];  
+    const producto = req.modelo || await Producto.findByPk(req.params.id);
 
-    try {  
-        if (!Array.isArray(listaComponentes) || listaComponentes.length === 0) {  
-            return res.status(400).json({ message: 'No existe lista de componentes' });  
-        }  
+    const lista_componentes = req.body;
+    if (!Array.isArray(lista_componentes)) {
+        return res.status(500).json({ error: `Error de input: se esperaba un componente` })
+    }
+    for (const i in lista_componentes) {
+        const componente = await Componente.findByPk(lista_componentes[i].id)
+        if (!componente) {
+            return res.status(404).json({ error: `El componente con el id '${lista_componentes[i].id}' no se encuentra` });
+        }
+        lista_componentes[i] = componente
+    }
 
-        await Promise.all(  
-            listaComponentes.map(async (componente) => {  
-                const existeRegistro = await Producto_Componente.findOne({  
-                    where: {id_producto: id, id_componente: componente.id}  
-                });  
+    try {
+        producto.addComponentes(lista_componentes)
+    } catch (err) {
+        const msg = `error al asignar componentes a un producto: '${err}'`
+        console.error(msg)
+        return res.status(500).json({ error: msg })
+    }
 
-                if (existeRegistro) {  
-                    mensajes.push(`El componente con el ID ${componente.id} ya está asociado al curso con id ${id}`);  
-                } else {  
-                    await Producto_Componente.create({ id_producto: id, id_componente: componente.id });  
-                    mensajes.push(`El componente con el ID ${componente.id} se asoció al curso con id ${id}`);  
-                }  
-            })  
-        );  
-
-        const prodActualizado = await Producto.findOne({  
-            where: {id},  
-            include: [  
-                {model: Componente, as: 'componentes', through: {attributes: []}}  
-            ],  
-        });  
-
-        return res.status(200).json({ mensajes, prodActualizado });  
-    } catch (error) {  
-        console.error(error);  
-        return res.status(500).json({ message: 'Error al obtener componentes' });  
-    }  
+    res.status(200).json({ message: 'Componente asociado con éxito'});
 };  
 
 productoController.associateComponenteById = associateComponenteById;  
