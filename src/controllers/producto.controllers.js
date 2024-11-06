@@ -88,77 +88,72 @@ productoController.deleteProducto = deleteProducto
 const getFabricantesById = async(req, res) => {
     const idProducto = req.params.id
     const producto = await Producto.findByPk(idProducto, {
-        include: { model: Fabricante, as: "Fabricantes" }
+        include: { model: Fabricante }
     });
     res.status(200).json(producto);
 }
 productoController.getFabricantesById = getFabricantesById
 
+
 //Asociar un fabricante a un producto
-
-const associateFabricanteById = async (req, res) => {
-    const producto = req.modelo || await Producto.findByPk(req.params.id);
-    const Lista_fabricantes = req.body
-
-    if (!Array.isArray(Lista_fabricantes)) {
-        return res.status(500).json({ error: `No se encontró lista de fabricantes` })
+const associateFabricanteById= async (req,res) => {
+    try{
+        const id = req.params.id // ID producto
+        const {nombre, direccion, numeroContacto, pathImgPerfil} = req.body  // ID fabricante
+        const producto = await Producto.findByPk(id) 
+        const fabricante = await Fabricante.create({nombre, direccion, numeroContacto, pathImgPerfil})
+        producto.addFabricantes(fabricante)
+        res.status(201).json({message: 'Fabricante agregado al producto'})
     }
-
-    for (const i in Lista_fabricantes) {
-        const fabricante = await Fabricante.findByPk(Lista_fabricantes[i].id)
-        if (!fabricante) {
-            return res.status(404).json({ error: `El fabricante con el id '${Lista_fabricantes[i].id}' no se encuentra` });
-        }
-        Lista_fabricantes[i] = fabricante
+    catch (error) {
+        res.status(404).json({message: "Error al agregar un fabricante al producto"})
     }
-    
-    try {
-        producto.addFabricantes(Lista_fabricantes)
-    } catch (error) {
-        const mensaje = `Error al asignar fabricantes a un producto: '${err}'`
-        console.error(mensaje)
-        return res.status(500).json({ error: mensaje })
-    }
-    res.status(200).json({ message: 'Fabricante asociado con éxito' });
 }
 productoController.associateFabricanteById = associateFabricanteById
+/* 
+Profe intente hacerlo con promesas para agregar de a varios pero no me funciono, 
+nose porque, lo dejo si lo quiere revisar.
+
+const associateFabricanteById = async (req, res) => {
+    const arrayFabricantes = req.body
+    const id = req.params.id
+    const producto = await Producto.findByPk(id) 
+     
+    let promesas = [];
+    arrayFabricantes.forEach(fabricante => {
+        promesas.push( Fabricante.create(fabricante) )
+    });
+    const fabricantes = await Promise.all(promesas)
+    producto.addFabricantes(fabricantes)
+    res.status(201).json({message: 'Fabricante agregado al producto'})
+}
+*/
+
+
 
 //Asociar un componente a un producto
-
 const associateComponenteById = async (req, res) => {  
-    const producto = req.modelo || await Producto.findByPk(req.params.id);
-
-    const lista_componentes = req.body;
-    if (!Array.isArray(lista_componentes)) {
-        return res.status(500).json({ error: `No se encontró lista de componentes` })
+    try{
+        const id = req.params.id // id producto
+        const {nombre, descripcion} = req.body  // id componente
+        const producto = await Producto.findByPk(id) 
+        const componente = await Componente.create({nombre, descripcion})
+        producto.addComponentes(componente)
+        res.status(201).json({message: 'Componente agregado al producto'})
     }
-    for (const i in lista_componentes) {
-        const componente = await Componente.findByPk(lista_componentes[i].id)
-        if (!componente) {
-            return res.status(404).json({ error: `El componente con el id '${lista_componentes[i].id}' no se encuentra` });
-        }
-        lista_componentes[i] = componente
+    catch (error) {
+        res.status(404).json({message: "Error al agregar un componente al producto"})
     }
+}
 
-    try {
-        producto.addComponentes(lista_componentes)
-    } catch (err) {
-        const msg = `error al asignar componentes a un producto: '${err}'`
-        console.error(msg)
-        return res.status(500).json({ error: msg })
-    }
-
-    res.status(200).json({ message: 'Componente asociado con éxito'});
-};  
-
-productoController.associateComponenteById = associateComponenteById;  
+productoController.associateComponenteById = associateComponenteById
 
 const getComponentesById = async(req, res) => {
     const idProducto = req.params.id
     try {  
         const idProducto = req.params.id
         const producto = await Producto.findByPk(idProducto, {
-            include: { model: Componente, as: "Componentes" }
+            include: { model: Componente }
         });
         res.status(200).json(producto);
 

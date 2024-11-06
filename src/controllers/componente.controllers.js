@@ -78,7 +78,7 @@ componenteController.deleteComponente = deleteComponente
 const getProductosByComponenteId = async(req, res) => {
     const idComponente = req.params.id
     const componente = await Componente.findByPk(idComponente, {
-        include: { model: Producto, as: "Productos" }
+        include: { model: Producto }
     });
     res.status(200).json(componente)
 }

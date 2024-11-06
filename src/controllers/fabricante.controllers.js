@@ -86,7 +86,7 @@ fabricanteController.deleteFabricante = deleteFabricante
 const getProductosByFabricanteId = async(req, res) => {
     const idFabricante = req.params.id
     const fabricante = await Fabricante.findByPk(idFabricante, {
-        include: { model: Producto, as: "Productos" }
+        include: { model: Producto }
     });
     res.status(200).json(fabricante);
 }
