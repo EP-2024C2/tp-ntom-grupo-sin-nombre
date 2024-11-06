@@ -1,4 +1,4 @@
-const { Componente, Producto_Componente } = require('../db/models')
+const { Componente, Producto } = require('../db/models')
 
 const componenteController = {}
 
@@ -77,18 +77,10 @@ componenteController.deleteComponente = deleteComponente
 
 const getProductosByComponenteId = async(req, res) => {
     const idComponente = req.params.id
-    res.status(200).json(await Componente.findOne({
-        where:{idComponente},
-        include: [
-            {
-                model: Producto,
-                as: 'Productos',
-                through:{
-                    attributes: []
-                }
-            }
-        ]
-    }))
+    const componente = await Componente.findByPk(idComponente, {
+        include: { model: Producto, as: "Productos" }
+    });
+    res.status(200).json(componente)
 }
 
 componenteController.getProductosByComponenteId = getProductosByComponenteId

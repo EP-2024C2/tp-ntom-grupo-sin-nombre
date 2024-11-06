@@ -86,19 +86,11 @@ const deleteProducto = async (req, res) => {
 productoController.deleteProducto = deleteProducto
 
 const getFabricantesById = async(req, res) => {
-    const id = req.params.id
-    res.status(200).json(await Producto.findOne({
-        where:{id},
-        include: [
-            {
-                model: Fabricante,
-                as: 'fabricantes',
-                through:{
-                    attributes: []
-                }
-            }
-        ],
-    }))
+    const idProducto = req.params.id
+    const producto = await Producto.findByPk(idProducto, {
+        include: { model: Fabricante, as: "Fabricantes" }
+    });
+    res.status(200).json(producto);
 }
 productoController.getFabricantesById = getFabricantesById
 
@@ -162,13 +154,14 @@ const associateComponenteById = async (req, res) => {
 productoController.associateComponenteById = associateComponenteById;  
 
 const getComponentesById = async(req, res) => {
-    const id = req.params.id
+    const idProducto = req.params.id
     try {  
-        const componente = await Producto.findOne({  
-            where: {id},  
-            include: [{model: Componente,as: 'componentes', through: {attributes: []}}],  
-        }); 
-        res.status(200).json(componente);  
+        const idProducto = req.params.id
+        const producto = await Producto.findByPk(idProducto, {
+            include: { model: Componente, as: "Componentes" }
+        });
+        res.status(200).json(producto);
+
     } catch (error) {  
         console.error(error);  
         res.status(404).json({message: 'No se encontró el componente'});  
