@@ -111,8 +111,8 @@ const associateFabricanteById= async (req,res) => {
 }
 productoController.associateFabricanteById = associateFabricanteById
 /* 
-Profe intente hacerlo con promesas para agregar de a varios pero no me funciono, 
-nose porque, lo dejo si lo quiere revisar.
+Profe intenté hacerlo con promesas para agregar de a varios pero no me funcionó, 
+no sé por qué, lo dejo si lo quiere revisar.
 
 const associateFabricanteById = async (req, res) => {
     const arrayFabricantes = req.body
