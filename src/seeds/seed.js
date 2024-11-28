@@ -1,6 +1,5 @@
 const sequelize = require('../config/database')
 const { Producto, Fabricante, Componente } = require('../db/models')
-
 async function seed() {
     try {
         // Sincronizar la base de datos (recrear las tablas si no existen)
@@ -85,63 +84,63 @@ async function seed() {
             nombre: 'Azúcar orgánica',
             descripcion: 'Azúcar orgánica libre de agrotóxicos.',
             precio: 150.0,
-            pathImg: '../seeds/images/1.jpg'
+            pathImg: './images/productos/1.jpg'
         })
 
         const producto2 = await Producto.create({
             nombre: 'Grisines Orgánicos',
             descripcion: 'Grisines Orgánicos con lino y chía.',
             precio: 200.0,
-            pathImg: 'images/3.jpg'
+            pathImg: 'images/2.jpg'
         })
 
         const producto3 = await Producto.create({
             nombre: 'Jugo de Naranja',
             descripcion: 'Jugo de Naranja orgánico sin azúcar agregado.',
             precio: 80.0,
-            pathImg: 'images/4.jpg'
+            pathImg: 'images/3.jpg'
         })
 
         const producto4 = await Producto.create({
             nombre: 'Mayonesa vegana',
             descripcion: 'Mayonesa vegana orgánica sin TACC.',
             precio: 120.0,
-            pathImg: 'images/5.jpg'
+            pathImg: 'images/4.jpg'
         })
 
         const producto5 = await Producto.create({
             nombre: 'Tallarines',
             descripcion: 'Pasta orgánica integral elaborada con tomates orgánicos.',
             precio: 250.0,
-            pathImg: 'images/6.jpg'
+            pathImg: 'images/5.jpg'
         })
 
         const producto6 = await Producto.create({
             nombre: 'Pochoclos',
             descripcion: 'Pochoclos orgánicos con azúcar orgánica y un toque de sal marina.',
             precio: 300.0,
-            pathImg: 'images/7.jpg'
+            pathImg: 'images/6.jpg'
         })
 
         const producto7 = await Producto.create({
             nombre: 'Yerba mate orgánica',
             descripcion: 'Yerba mate orgánica con hierbas naturales.',
             precio: 100.0,
-            pathImg: 'images/8.jpg'
+            pathImg: 'images/7.jpg'
         })
 
         const producto8 = await Producto.create({
             nombre: 'Miel',
             descripcion: 'Miel orgánica suave y equilibrada.',
             precio: 180.0,
-            pathImg: 'images/9.jpg'
+            pathImg: 'images/8.jpg'
         })
 
         const producto9 = await Producto.create({
             nombre: 'Galletitas',
             descripcion: 'Galletitas orgánicas de cacao y miel.',
             precio: 130.0,
-            pathImg: 'images/2.jpg'
+            pathImg: 'images/9.jpg'
         })
 
         // Asociar fabricantes a productos
