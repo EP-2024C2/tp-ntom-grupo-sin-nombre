@@ -4,7 +4,11 @@ const db = require('./db/models');
 const app = express()
 const PORT = 3001
 const seed = require('./seeds/seed')
+const cors = require('cors')
 
+app.use(cors({
+    origin: 'http://localhost:5173' 
+  }));
 app.use(express.json())
 
 

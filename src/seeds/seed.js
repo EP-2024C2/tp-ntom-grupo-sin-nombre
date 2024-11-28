@@ -85,7 +85,7 @@ async function seed() {
             nombre: 'Azúcar orgánica',
             descripcion: 'Azúcar orgánica libre de agrotóxicos.',
             precio: 150.0,
-            pathImg: 'images/1.jpg'
+            pathImg: '../seeds/images/1.jpg'
         })
 
         const producto2 = await Producto.create({
